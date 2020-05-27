@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 window.onload = () => {
     getCountryData();
+    buildChart();
+    getHistoricalData();
 }
 
 function initMap() {
@@ -22,10 +24,87 @@ function initMap() {
             lat: 54,
             lng: 25
         },
-        zoom: 4
+        zoom: 4,
+        styles: mapStyle,
     });
     infoWindow = new google.maps.InfoWindow({});
 }
+
+
+const getHistoricalData = () => {
+    fetch("https://corona.lmao.ninja/v2/historical/all?lastdays=120")
+        .then((response) => {
+            return response.json()
+        }).then((data) => {
+            let chartData = buildChartData(data);
+            buildChart(chartData);
+        })
+}
+
+const buildChartData = (data) => {
+    let chartData = [];
+    for (let date in data.cases) {
+        let newDataPoint = {
+            x: date,
+            y: data.cases[date],
+        }
+        chartData.push(newDataPoint);
+    }
+    return chartData;
+}
+
+const buildChart = (chartData) => {
+    var ctx = document.getElementById('cases-chart').getContext('2d');
+    var timeFormat = 'MM/DD/YYYY'
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
+
+        // The data for our dataset
+        data: {
+            datasets: [{
+                label: 'Total Number of Cases',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: chartData
+            }]
+        },
+
+        //Configuration options
+        options: {
+            toolstips: {
+                mode: 'index',
+                intersect: false
+            },
+            hover: {
+                mode: 'index',
+                intersect: false
+            },
+            scales: {
+                xAxes: [{
+                    type: "time",
+                    time: {
+                        format: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Date'
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        callback: function(value,index,values) {
+                            return numeral(value).format('0,0');
+                        }
+                    }
+                }]
+            }
+        }
+
+    });
+}
+
 
 const getCountryData = () => {
     fetch("https://corona.lmao.ninja/v2/countries")
