@@ -8,9 +8,24 @@ document.addEventListener("DOMContentLoaded", function () {
         className: 'os-theme-dark',
         scrollbars: {
             clickScrolling: true,
-        }
+            autoHide: 'scroll',
+            touchSupport: true,
+        },
+        resize: 'both',
     });
+    OverlayScrollbars(document.getElementById('country-table'), {
+        className: 'os-theme-dark',
+        scrollbars: {
+            clickScrolling: true,
+            autoHide: 'scroll',
+            touchSupport: true,
+        },
+        resize: 'both',
+    });
+    
 });
+
+
 
 window.onload = () => {
     getCountryData();
@@ -53,13 +68,13 @@ const buildChartData = (data) => {
     return chartData;
 }
 
+
 const buildChart = (chartData) => {
     var ctx = document.getElementById('cases-chart').getContext('2d');
     var timeFormat = 'MM/DD/YYYY'
     var chart = new Chart(ctx, {
         // The type of chart we want to create
         type: 'line',
-
         // The data for our dataset
         data: {
             datasets: [{
@@ -69,7 +84,7 @@ const buildChart = (chartData) => {
                 data: chartData
             }]
         },
-
+        
         //Configuration options
         options: {
             toolstips: {
@@ -80,6 +95,8 @@ const buildChart = (chartData) => {
                 mode: 'index',
                 intersect: false
             },
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 xAxes: [{
                     type: "time",
@@ -101,9 +118,9 @@ const buildChart = (chartData) => {
                 }]
             }
         }
-
     });
 }
+
 
 
 const getCountryData = () => {

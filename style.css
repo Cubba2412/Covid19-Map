@@ -29,8 +29,9 @@ body {
 }
 .chart-info {
     width:30%;
-    margin-left: 30px;
-    margin-top: 20px;
+    height: 40%;
+    position: relative;
+    
 }
 
 
@@ -54,7 +55,7 @@ body {
     border-radius: 5px;
 }
 
-.country-data {
+#country-table {
     width: 40%;
     margin-top: 20px;
     border-radius: 10px;
