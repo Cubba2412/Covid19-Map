@@ -192,8 +192,8 @@ const showDataInTable = (data) => {
     var html = '';
     data.forEach((country) => {
         html += `
-        <tr>
-            <td>${country.country}</td>
+        <tr class="country-table-data">
+            <td><img class="table-flag" src="${country.countryInfo.flag}" alt="Flag of ${country.country}">${country.country}</td>
             <td>${country.cases}</td>
             <td>${country.recovered}</td>
             <td>${country.deaths}</td>

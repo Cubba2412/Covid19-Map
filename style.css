@@ -67,3 +67,10 @@ body {
     justify-content:center;
     height: 700px;
 }
+
+.table-flag {
+    width: 13%;
+    height: 13%;
+    border-radius: 15%;
+    margin-right: 3%;
+}
