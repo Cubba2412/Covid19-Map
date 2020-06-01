@@ -194,11 +194,12 @@ const showDataInTable = (data) => {
         html += `
         <tr class="country-table-data">
             <td><img class="table-flag" src="${country.countryInfo.flag}" alt="Flag of ${country.country}">${country.country}</td>
-            <td>${country.cases}</td>
-            <td>${country.recovered}</td>
-            <td>${country.deaths}</td>
+            <td style="text-align: right" >${country.cases}</td>
+            <td style="text-align: right">${country.recovered}</td>
+            <td style="text-align: right">${country.deaths}</td>
         </tr>
         `
     })
     document.getElementById("table-data").innerHTML = html;
 }
+
