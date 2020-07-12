@@ -27,34 +27,57 @@
 </head>
 
 <body>
-  
-    <nav class="navbar navbar-dark bg-dark">
-      <p class="navbar-brand">Covid-19 Tracker</p>
-      <div id="search-container">
+
+  <nav class="navbar navbar-dark bg-dark">
+    <p class="navbar-brand">Covid-19 Tracker</p>
+    <div id="search-container-start">
       <div id="search-icon">
-          <img src="img/search.svg" alt="Search Button" id="search-btn">
-          <input type="text" id="search" placeholder="">
+        <img src="img/search.svg" alt="Search Button" id="search-btn">
+        <input type="text" id="search" placeholder="">
       </div>
       <div id="tip">
-          <p>Hit Enter to Search</p>
+        <p>Hit Enter to Search</p>
       </div>
     </div>
-    </nav>
-    <script>
+  </nav>
+  <script>
+    //DONE: FIX CIRCLE ANIMATION ON CLICK.
+    //TODO: ADD Search functionality for table.
+    //TODO: Add search functionality for MAP.
+    const searchBtn = document.getElementById('search-btn');
+    var searchContainer = document.getElementById('search-container-start');
+    const tip = document.getElementById('tip');
+    var i = 0;
+    var message = 'Enter a Country';
+    var typeWriterSpeed = 100;
 
-      const searchBtn = document.getElementById('search-btn');
-      const searchContainer = document.getElementById('search-container');
-      const tip = document.getElementById('tip');
-    
-      searchBtn.addEventListener('click', () => {
-        search.style.width = '30%';
-        searchContainer.style.width = '30%';
-        searchBtn.style.alignSelf = 'flex-start';
-      })
-      
+    searchBtn.addEventListener('click', () => {
+      //Change id of search container to remove expanding circle animation on click. 
+      searchContainer.id = 'search-container';
+      searchContainer = document.getElementById('search-container');
+      search.style.width = '30%';
+      searchContainer.style.width = '30%';
+      searchBtn.style.marginRight = '103%';
+      search.style.cursor = 'text';
+      search.focus();
+      typeWriter();
+    })
 
-    </script>
-  
+    const typeWriter = () => {
+      if (i < message.length) {
+        msg = search.getAttribute('placeholder') + message.charAt(i)
+        search.setAttribute('placeholder', msg)
+        i++;
+        setTimeout(typeWriter, typeWriterSpeed)
+      }
+    }
+
+    search.addEventListener('keydown', () => {
+      tip.style.visibility = 'visible';
+      tip.style.opacity = '1';
+    })
+  </script>
+
 
   <div class="map-info">
     <div id="map"></div>

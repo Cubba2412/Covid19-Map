@@ -12,11 +12,40 @@ nav {
     margin-right: 0px;
 }
 
+#search-container-start {
+    height: -webkit-fill-available;
+    display: inline-block;
+    padding-right:2.8%;
+    padding-top: .3125rem;
+    width:5%;
+}
+
 #search-container {
     height: -webkit-fill-available;
     display: inline-block;
+    padding-right:2.8%;
     padding-top: .3125rem;
     width:5%;
+}
+
+#search-container-start::before {
+    content: "";
+    border-radius: 50%;
+    width: 2.15%;
+    height: 32.5%;
+    border: 4px solid red;
+    position: absolute;
+    animation: grow 1s infinite;
+}
+
+@keyframes grow {
+    from {
+        transform: scale(1.2);
+    }
+    to { 
+        transform: scale(1.8);
+        opacity: 0;
+    }
 }
 
 #search-icon {
@@ -29,7 +58,7 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Montserrat;
+    font-family: 'Montserrat';
     background-color: #343a40!important;
 }
 input {
@@ -40,28 +69,29 @@ input {
     height: 25px;
     border-radius: 30px;
     border: none;
-    color: white;
+    background-color: white;
+    color: rgb(151, 152, 153);
     cursor: pointer;    
     outline: none;
     font-size: 1.6em;
+    padding-left: 2.5%;
+    transition: width 1s ease;
 }
 
 #tip {
     color: white;
     visibility: hidden;
+    opacity: 0;
+    transition: opacity 1.5s;
 }
 
 #search-btn {
     height: 19px;
     width: 19px;
-    display:block;
     cursor: pointer;
-    position: absolute;
     z-index: 2;
+    transition: margin-right 1s ease;
 }
-
-
-
 
 #map {
     width: 100%;
