@@ -2,10 +2,66 @@ body {
     margin: 0;
 }
 
-#nav {
-    background-color: blue;
-    height: 50px;
+nav {
+    height: 7vh;
+    align-items: center;
+    display:flex;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    margin-bottom: 0px;
+    margin-right: 0px;
 }
+
+#search-container {
+    height: -webkit-fill-available;
+    display: inline-block;
+    padding-top: .3125rem;
+    width:5%;
+}
+
+#search-icon {
+    height: 20px;
+    margin-left: auto;
+    flex-direction: column;
+    margin-right: 1rem;
+    text-align: center;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Montserrat;
+    background-color: #343a40!important;
+}
+input {
+    font-family: 'Montserrat';
+    position: absolute;
+    z-index: 1;
+    width: 25px;
+    height: 25px;
+    border-radius: 30px;
+    border: none;
+    color: white;
+    cursor: pointer;    
+    outline: none;
+    font-size: 1.6em;
+}
+
+#tip {
+    color: white;
+    visibility: hidden;
+}
+
+#search-btn {
+    height: 19px;
+    width: 19px;
+    display:block;
+    cursor: pointer;
+    position: absolute;
+    z-index: 2;
+}
+
+
+
 
 #map {
     width: 100%;
@@ -15,6 +71,7 @@ body {
 .map-info {
     background-color: bisque;
     height: 400px;
+    /*margin-top: 0.5%;*/
 }
 
 .data-info {
@@ -27,11 +84,12 @@ body {
     font-weight: bold;
     color: #555;
 }
+
 .chart-info {
-    width:30%;
+    width: 30%;
     height: 40%;
     position: relative;
-    
+
 }
 
 
@@ -64,12 +122,12 @@ body {
 
 .data-info {
     display: flex;
-    justify-content:center;
+    justify-content: center;
     height: 700px;
 }
 
 .table-flag {
-    max-width: 100%;
+    max-width: 10%;
     max-height: 15%;
     border-radius: 15%;
     margin-right: 3%;
