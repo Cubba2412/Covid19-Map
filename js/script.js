@@ -1,4 +1,14 @@
+//DONE: FIX CIRCLE ANIMATION ON CLICK.
+//DONE: ADD Search functionality for table.
+//DONE: Add search functionality for MAP.
+//TODO: Keep aspect ratio for search icon when not expanded
+//TODO: Create Loading screen
+//TODO: Fix size of infection circles on map
+//TODO: Finalize styling on buttom part of page
+//TODO: ADD FUNCTIONALITY TO CHART (SEE DEATH CURVE, RECOVERY CURVE ETC.)
 var map;
+var i = 0;
+var data;
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -22,16 +32,112 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         resize: 'both',
     });
-    
+
 });
-
-
 
 window.onload = () => {
     getCountryData();
     buildChart();
     getHistoricalData();
 }
+
+const animateSearchBar = (data) => {
+    
+    let searchBtn = document.getElementById('search-btn');
+    let searchContainer = document.getElementById('search-container-start');
+    let search = document.getElementById('search');
+    let tip = document.getElementById('tip');
+
+    searchBtn.addEventListener('click', () => {
+        //Change id of search container to remove expanding circle animation on click. 
+        searchContainer.id = 'search-container';
+        searchContainer = document.getElementById('search-container');
+        search.style.width = '30%';
+        searchContainer.style.width = '30%';
+        searchBtn.style.marginRight = '103%';
+        search.style.cursor = 'text';
+        search.focus();
+        typeWriter();
+    })
+
+    search.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            searchCountry(data);
+        }
+        tip.style.visibility = 'visible';
+        tip.style.opacity = '1';
+    });
+}
+
+const searchCountry = (data) => {
+    //Get value and ensure the input is identical to the API data.
+    var countryInput = document.getElementById('search').value;
+    var countryFound = -1;
+    var countryLow = countryInput.toLowerCase();
+    data.map((country) => {
+        var countryString = country.country.toLowerCase();
+        if (countryLow.localeCompare(countryString) == 0) {
+            countryFound = 1;
+            let countryCenter = {
+                lat: country.countryInfo.lat,
+                lng: country.countryInfo.long
+            }
+            map.panTo(countryCenter);
+        }
+    })
+    if (countryFound != 1) {
+        alert(`"${countryInput}" is not a country`);
+    }
+}
+
+function searchTable() {
+    //Convert input for comparison with table
+    var input, filter, found, table, tableBody, tableHead, ths, trBody, td, i, j;
+    input = document.getElementById("search");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("main-table");
+    //Head
+    tableHead = document.getElementsByTagName("thead")[0];
+    ths = tableHead.getElementsByTagName("th");
+    //Body
+    tableBody = document.getElementsByTagName("tbody")[0];
+    trBody = tableBody.getElementsByTagName("tr");
+    //If found remove everything but what matches with the found value
+    for (i = 0; i < trBody.length; i++) {
+        td = trBody[i].getElementsByTagName("td");
+        for (j = 0; j < td.length; j++) {
+            if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                found = true;
+            }
+        }
+        if (found) {
+            trBody[i].style.display = "";
+            found = false;
+            //Maintain border radius on table
+            table.style.borderRadius = "10px";
+            //Bug fix: removes black line at top of table.
+            ths.forEach((th) => {
+                th.style.borderTopWidth = "0px";
+            })
+        } else {
+            trBody[i].style.display = "none";
+        }
+    }
+}
+
+
+const typeWriter = () => {
+    var search = document.getElementById('search');
+    let message = 'Enter a Country';
+    let typeWriterSpeed = 100;
+    if (i < message.length) {
+        msg = search.getAttribute('placeholder') + message.charAt(i)
+        search.setAttribute('placeholder', msg)
+        i++;
+        setTimeout(typeWriter, typeWriterSpeed)
+    }
+}
+
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -84,7 +190,7 @@ const buildChart = (chartData) => {
                 data: chartData
             }]
         },
-        
+
         //Configuration options
         options: {
             toolstips: {
@@ -111,7 +217,7 @@ const buildChart = (chartData) => {
                 }],
                 yAxes: [{
                     ticks: {
-                        callback: function(value,index,values) {
+                        callback: function (value, index, values) {
                             return numeral(value).format('0,0');
                         }
                     }
@@ -123,14 +229,13 @@ const buildChart = (chartData) => {
 
 
 
-const getCountryData = () => {
-    fetch("https://corona.lmao.ninja/v2/countries")
-        .then((response) => {
-            return response.json()
-        }).then((data) => {
-            showDataOnMap(data);
-            showDataInTable(data);
-        })
+async function getCountryData() {
+    const response = await fetch("https://corona.lmao.ninja/v2/countries")
+    var data = await response.json();
+    showDataOnMap(data);
+    showDataInTable(data);
+    animateSearchBar(data);
+    return data;    
 }
 
 const showDataOnMap = (data) => {
